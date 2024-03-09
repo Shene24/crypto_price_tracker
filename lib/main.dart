@@ -1,21 +1,26 @@
+import 'package:crypto_price_tracker/routes/routes.dart';
+import 'package:crypto_price_tracker/viewmodels/crypto_viewmodel.dart';
+import 'package:crypto_price_tracker/views/crypto_view.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // Initialize Fluro router
+    AppRoutes.configureRoutes();
+
     return MaterialApp(
       title: 'Crypto Price Tracker',
-      theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity),
-      home: CryptoView(),
+      onGenerateRoute: AppRoutes.router.generator,
+      home: ChangeNotifierProvider(
+        create: (context) => CryptoViewModel(),
+        child: CryptoView(),
+      ),
     );
   }
 }
