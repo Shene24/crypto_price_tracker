@@ -11,16 +11,13 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Initialize Fluro router
-    AppRoutes.configureRoutes();
-
     return MaterialApp(
-      title: 'Crypto Price Tracker',
-      onGenerateRoute: AppRoutes.router.generator,
-      home: ChangeNotifierProvider(
-        create: (context) => CryptoViewModel(),
-        child: CryptoView(),
-      ),
+      title: 'Your App Name',
+      initialRoute: AppRoutes.crypto,
+      routes: {
+        AppRoutes.crypto: (context) => CryptoView(),
+        // Add more routes as needed
+      },
     );
   }
 }
