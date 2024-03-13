@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:crypto_price_tracker/blocs/crypto_bloc.dart';
 import 'package:crypto_price_tracker/blocs/app_states.dart';
 import 'package:crypto_price_tracker/services/crypto_service.dart';
-import 'package:crypto_price_tracker/services/crypto_service.dart';
 
 class CryptoView extends StatelessWidget {
   const CryptoView({super.key});
@@ -17,7 +16,7 @@ class CryptoView extends StatelessWidget {
             )..add(AppLoad()),
         child: Scaffold(
           appBar: AppBar(
-            title: Text('Crypto Price Tracker'),
+            title: Text('Crypto Market Prices'),
           ),
           body: BlocBuilder<AppBloc, AppState>(
             builder: (context, state) {
@@ -28,7 +27,7 @@ class CryptoView extends StatelessWidget {
               }
               if (state is AppLoadedState) {
                 return Center(
-                  child: Text('Data Loaded'),
+                  child: Text('Data loaded'),
                 );
               }
               return Container();

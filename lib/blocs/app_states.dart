@@ -1,27 +1,18 @@
+import 'package:crypto_price_tracker/models/crypto_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 @immutable
-abstract class AppState extends Equatable {}
+abstract class AppState {}
 
-//data loading state
-class AppLoadingState extends AppState {
-  @override
-  List<Object> get props => [];
-}
+class AppLoadingState extends AppState {}
 
-//data loaded state
 class AppLoadedState extends AppState {
-  @override
-  List<Object> get props => [];
+  final CryptoModel data;
+  AppLoadedState(this.data);
 }
 
-//data error state
-class AppErrorState extends AppState {
+class ExchangeErrorState extends AppState {
   final String error;
-
-  AppErrorState({required this.error});
-
-  @override
-  List<Object> get props => [error];
+  ExchangeErrorState(this.error);
 }

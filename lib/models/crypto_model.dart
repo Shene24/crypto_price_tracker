@@ -1,9 +1,9 @@
 class CryptoModel {
   final String name;
-  final String price;
-  final String high;
-  final String low;
-  final String change;
+  final double price;
+  final double high;
+  final double low;
+  final double change;
 
   CryptoModel({
     required this.name,
