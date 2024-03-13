@@ -1,4 +1,5 @@
 import 'package:crypto_price_tracker/blocs/app_events.dart';
+import 'package:crypto_price_tracker/models/crypto_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:crypto_price_tracker/blocs/crypto_bloc.dart';
@@ -25,9 +26,19 @@ class CryptoView extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 );
               }
+              if (state is ExchangeErrorState) {
+                return Center(
+                  child: Text('Error loading data: ${state.error}'),
+                );
+              }
               if (state is AppLoadedState) {
                 return Center(
-                  child: Text('Data loaded'),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("data is loaded"),
+                    ],
+                  ),
                 );
               }
               return Container();

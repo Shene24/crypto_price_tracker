@@ -17,14 +17,20 @@ class CryptoRepo {
   }
 
   Stream<List<CryptoModel>> getExchangeStream() {
-    return channel.stream
-        .where((data) => data.toString().startsWith("["))
-        .map((data) {
-      // Parse the JSON data into a List of CryptoModel
-      List<dynamic> jsonList = json.decode(data);
-      return jsonList
-          .map((jsonData) => CryptoModel.fromJson(jsonData))
-          .toList();
+    return channel.stream.where((data) => data is String).map((data) {
+      try {
+        List<dynamic> jsonList = json.decode(data);
+        if (jsonList is List) {
+          return jsonList
+              .map((jsonData) => CryptoModel.fromJson(jsonData))
+              .toList();
+        }
+      } catch (e) {
+        print('Error decoding JSON: $e');
+      }
+
+      // Return an empty list if decoding fails or the data doesn't match expectations
+      return [];
     });
   }
 }

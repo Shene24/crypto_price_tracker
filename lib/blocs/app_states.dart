@@ -8,7 +8,7 @@ abstract class AppState {}
 class AppLoadingState extends AppState {}
 
 class AppLoadedState extends AppState {
-  final CryptoModel data;
+  final List<CryptoModel> data;
   AppLoadedState(this.data);
 }
 

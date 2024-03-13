@@ -9,15 +9,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   AppBloc(this.cryptoService) : super(AppLoadingState()) {
     on<AppEvent>((event, emit) async {
-      try {
-        emit(AppLoadingState());
-        print('Loading data');
-        final List<CryptoModel> data =
-            await cryptoService.getExchangeStream().first;
+      emit(AppLoadingState());
+      await for (final data in cryptoService.getExchangeStream()) {
         emit(AppLoadedState(data));
-        print('Data loaded');
-      } catch (error) {
-        emit(ExchangeErrorState('Error loading data: $error'));
       }
     });
   }
