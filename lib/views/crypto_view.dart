@@ -32,13 +32,24 @@ class CryptoView extends StatelessWidget {
                 );
               }
               if (state is AppLoadedState) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("data is loaded"),
-                    ],
-                  ),
+                List<CryptoModel> data = state.data;
+                return ListView.builder(
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    CryptoModel crypto = data[index];
+                    return ListTile(
+                      title: Text(crypto.name),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Price: ${crypto.price.toString()}'),
+                          Text('High: ${crypto.high.toString()}'),
+                          Text('Low: ${crypto.low.toString()}'),
+                          Text('Change: ${crypto.change.toString()}'),
+                        ],
+                      ),
+                    );
+                  },
                 );
               }
               return Container();

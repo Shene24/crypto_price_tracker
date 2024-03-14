@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:crypto_price_tracker/models/crypto_model.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+// import 'package:http/http.dart';
 
 class CryptoRepo {
   final BuildContext context;
@@ -17,20 +18,38 @@ class CryptoRepo {
   }
 
   Stream<List<CryptoModel>> getExchangeStream() {
-    return channel.stream.where((data) => data is String).map((data) {
+    return channel.stream
+        .where((data) => data is String && data.startsWith("["))
+        .map((data) {
       try {
-        List<dynamic> jsonList = json.decode(data);
-        if (jsonList is List) {
-          return jsonList
-              .map((jsonData) => CryptoModel.fromJson(jsonData))
+        List<dynamic> jsonData = json.decode(data);
+        if (jsonData.length > 1) {
+          // Skip the first item (handle based on Kraken API documentation)
+          List<CryptoModel> cryptoList = jsonData
+              .sublist(1)
+              .map((jsonItem) {
+                try {
+                  return CryptoModel.fromJson(jsonItem);
+                } catch (e) {
+                  print('Error creating CryptoModel: $e');
+                  return null;
+                }
+              })
+              .whereType<CryptoModel>()
               .toList();
+
+          return cryptoList;
+        } else {
+          print('Unexpected JSON format or insufficient data: $jsonData');
         }
       } catch (e) {
         print('Error decoding JSON: $e');
       }
-
-      // Return an empty list if decoding fails or the data doesn't match expectations
-      return [];
+      return []; // Return empty list on error or unexpected data
     });
+  }
+
+  void closeConnection() {
+    channel.sink.close();
   }
 }
