@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:crypto_price_tracker/blocs/crypto_bloc.dart';
 import 'package:crypto_price_tracker/blocs/app_states.dart';
 import 'package:crypto_price_tracker/services/crypto_service.dart';
+import 'package:flutter/material.dart';
 
-@override
 class CryptoView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -29,12 +29,24 @@ class CryptoView extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
-                height: 20), // Add some space between the image and the list
-            Expanded(
-              child: CryptoListView(), // List of the top 10 currencies
+            SizedBox(height: 20),
+            Center(
+              child: Text(
+                "Cryptocurrency Prices",
+                style: TextStyle(
+                  fontSize: 24,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
-            CryptoSlider(), // Slider of each currency at the bottom
+            SizedBox(height: 20),
+            Expanded(
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.5,
+                child: CryptoListView(),
+              ),
+            ),
           ],
         ),
       ),
@@ -62,15 +74,14 @@ class CryptoListView extends StatelessWidget {
       itemCount: cryptoNames.length,
       itemBuilder: (context, index) {
         final cryptoName = cryptoNames[index];
-        return ListTile(
-          title: Text(cryptoName),
+        return CryptoListItem(
+          cryptoName: cryptoName,
           onTap: () {
-            // Perform action when tapped, for example, navigate to details page
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) =>
-                      CryptoDetailsPage(cryptoName: cryptoName)),
+                builder: (context) => CryptoDetailsPage(cryptoName: cryptoName),
+              ),
             );
           },
         );
@@ -79,12 +90,33 @@ class CryptoListView extends StatelessWidget {
   }
 }
 
-class CryptoSlider extends StatelessWidget {
+class CryptoListItem extends StatelessWidget {
+  final String cryptoName;
+  final VoidCallback onTap;
+
+  const CryptoListItem({
+    required this.cryptoName,
+    required this.onTap,
+  });
+
   @override
   Widget build(BuildContext context) {
-    // You can implement a slider here with details of each currency
-    return Container(
-        // Slider implementation
-        );
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        height: 80,
+        margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Center(
+          child: Text(
+            cryptoName,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+    );
   }
 }
