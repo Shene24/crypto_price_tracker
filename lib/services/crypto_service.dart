@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:crypto_price_tracker/models/crypto_model.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-// import 'package:http/http.dart';
+import 'package:http/http.dart';
 
 class CryptoRepo {
   final BuildContext context;
